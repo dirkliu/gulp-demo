@@ -1,0 +1,29 @@
+{
+  "name": "gulp-demo",
+  "version": "1.0.0",
+  "description": "A demo of gulp",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dirkliu/gulp-demo.git"
+  },
+  "keywords": [
+    "gulp"
+  ],
+  "author": "七月",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dirkliu/gulp-demo/issues"
+  },
+  "homepage": "https://github.com/dirkliu/gulp-demo#readme",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-sass": "^4.0.2",
+    "gulp-uglify": "^3.0.2",
+    "node-sass": "^4.12.0"
+  }
+}
