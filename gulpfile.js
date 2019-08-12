@@ -37,4 +37,8 @@ gulp.task('clean', function (cb) {
   return del(['dist'], cb)
 })
 
-gulp.task("default", gulp.series('clean', gulp.parallel('js', 'html', 'sass')))
+gulp.task("default", gulp.series([
+  'clean', 
+  gulp.parallel('js', 'html', 'sass'),
+  'versionjson']
+))
