@@ -13,7 +13,6 @@ gulp.task('js', function() {
     .pipe(uglify())
     .pipe(concat('vendor.min.js'))
     .pipe(sourcemaps.write())
-    .pipe(versionjson())
     .pipe(gulp.dest('dist/js'))
 })
 
@@ -26,6 +25,12 @@ gulp.task('sass', function() {
 return gulp.src(['src/styles/*.scss'])
   .pipe(sass().on('error', sass.logError))
   .pipe(gulp.dest("dist/styles")) 
+})
+
+gulp.task('versionjson', function () {
+  return gulp.src('dist/**/*')
+    .pipe(versionjson('version.json'))
+    .pipe(gulp.dest('dist'))
 })
 
 gulp.task('clean', function (cb) {
