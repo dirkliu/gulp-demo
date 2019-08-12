@@ -5,6 +5,7 @@ var sass = require('gulp-sass')
 var sourcemaps = require('gulp-sourcemaps')
 var del = require('del')
 var versionjson = require("./plugins/gulp-versionjson/index")
+var staticResolve = require("./plugins/gulp-static-resolver/index")
 sass.compiler = require('node-sass')
 
 gulp.task('js', function() {
@@ -22,15 +23,20 @@ gulp.task('html', function() {
 })
 
 gulp.task('sass', function() {
-return gulp.src(['src/styles/*.scss'])
-  .pipe(sass().on('error', sass.logError))
-  .pipe(gulp.dest("dist/styles")) 
+  return gulp.src(['src/styles/*.scss'])
+    .pipe(sass().on('error', sass.logError))
+    .pipe(gulp.dest("dist/styles")) 
 })
 
 gulp.task('versionjson', function () {
   return gulp.src('dist/**/*')
     .pipe(versionjson('version.json'))
     .pipe(gulp.dest('dist'))
+})
+
+gulp.task('resolve', function () {
+  return gulp.src(['dist/**/*.html', 'dist/**/*.js', 'dist/**/*.css'])
+    .pipe(staticResolve())
 })
 
 gulp.task('clean', function (cb) {
