@@ -7,7 +7,7 @@ module.exports = function () {
       cb()
       return
     }
-    console.log('file:', file)
+    console.log('file:', file.contents.toString())
     cb();
   })
 }

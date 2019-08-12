@@ -6,6 +6,7 @@ var sourcemaps = require('gulp-sourcemaps')
 var del = require('del')
 var versionjson = require("./plugins/gulp-versionjson/index")
 var staticResolve = require("./plugins/gulp-static-resolver/index")
+var cleanCSS = require('gulp-clean-css')
 sass.compiler = require('node-sass')
 
 gulp.task('js', function() {
@@ -25,6 +26,7 @@ gulp.task('html', function() {
 gulp.task('sass', function() {
   return gulp.src(['src/styles/*.scss'])
     .pipe(sass().on('error', sass.logError))
+    .pipe(cleanCSS({compatibility: 'ie8'}))
     .pipe(gulp.dest("dist/styles")) 
 })
 
