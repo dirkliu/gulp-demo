@@ -1,4 +1,5 @@
 var gulp = require('gulp')
+var babel = require("gulp-babel")
 var uglify = require('gulp-uglify')
 var concat = require('gulp-concat')
 var sass = require('gulp-sass')
@@ -12,6 +13,7 @@ sass.compiler = require('node-sass')
 gulp.task('js', function() {
   return gulp.src('src/js/**.js')
     .pipe(sourcemaps.init())
+    .pipe(babel())
     .pipe(uglify())
     .pipe(concat('vendor.min.js'))
     .pipe(sourcemaps.write())
