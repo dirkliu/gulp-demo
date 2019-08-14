@@ -1,3 +1,1 @@
-export default {
-  name: 'home'
-}
+var page = 'home'
