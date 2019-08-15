@@ -15,4 +15,45 @@ gulp.task('html', function () {
     .pipe(gulp.dest("dist"))
 })
 
-gulp.task("default", gulp.series('html'))
+gulp.task('homeJs', function () {
+  return gulp.src('src/home/js/**/*')
+    .pipe(sourcemaps.init())
+    .pipe(babel())
+    .pipe(uglify())
+    .pipe(concat('home.min.js'))
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest('dist/home/js'))
+})
+
+gulp.task('homeImg', function () {
+  return gulp.src('src/home/img/**/*')
+    .pipe(gulp.dest('dist/home/img'))
+})
+
+gulp.task('homeStyle', function () {
+  return gulp.src('src/home/styles/**/*')
+    .pipe(sass().on('error', sass.logError))
+    .pipe(cleanCSS({compatibility: 'ie8'}))
+    .pipe(gulp.dest('dist/home/styles'))
+})
+
+gulp.task('versionjson', function () {
+  return gulp.src('dist/**/*')
+    .pipe(versionjson('version.json'))
+    .pipe(gulp.dest('dist'))
+})
+
+gulp.task('resolve', function () {
+  return gulp.src(['dist/**/*.html', 'dist/**/*.js', 'dist/**/*.css'])
+    .pipe(staticResolve())
+})
+
+gulp.task('clean', function (cb) {
+  return del(['dist'], cb)
+})
+
+gulp.task("default", gulp.series([
+  'clean',
+  gulp.parallel('html', 'homeImg', 'homeStyle', 'homeJs'),
+  'versionjson'
+  ]))

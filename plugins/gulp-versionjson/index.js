@@ -24,7 +24,7 @@ function versionjson(file) {
       return
     }
     var hash = md5(file.contents, 'md5', 'hex', 'utf8')
-    jsonMap[file.relative.replace('\\', '/')] = hash
+    jsonMap[file.relative.replace(/\\/g, '/')] = hash
     cb()
   }
 
