@@ -8,6 +8,8 @@ var del = require('del')
 var versionjson = require("./plugins/gulp-versionjson/index")
 var staticResolve = require("./plugins/gulp-static-resolver/index")
 var cleanCSS = require('gulp-clean-css')
+var express = require('express')
+
 sass.compiler = require('node-sass')
 
 gulp.task('html', function () {
@@ -37,29 +39,49 @@ gulp.task('home', function () {
     .pipe(gulp.dest('dist/home/js'))
 })
 
-gulp.task('versionjson', function () {
-  return gulp.src('dist/**/*')
+gulp.task('version', function () {
+  return gulp.src(['dist/**/*', '!dist/version.json', '!dist/*.html'])
     .pipe(versionjson('version.json'))
     .pipe(gulp.dest('dist'))
-})
-
-gulp.task('resolve', function () {
-  return gulp.src(['dist/**/*.html', 'dist/**/*.js', 'dist/**/*.css'])
-    .pipe(staticResolve())
+    .pipe(gulp.src(['dist/**/*.html', 'dist/**/*.js', 'dist/**/*.css']))
+    .pipe(staticResolve('dist/version.json'))
+    .pipe(gulp.dest('dist'))
 })
 
 gulp.task('clean', function (cb) {
   return del(['dist'], cb)
 })
 
-gulp.task('watch', function () {
+gulp.task('watch', function (cb) {
   gulp.watch('src/**/*.html', gulp.series('html'))
   gulp.watch('src/**/styles/**/*', gulp.series('style'))
   gulp.watch('src/home/js/**/*', gulp.series('home'))
+  console.log('gulp is watching')
+  cb()
+})
+
+gulp.task('server', function (cb) {
+  var app = express()
+  app.use(express.static('dist'))
+  app.listen(9999)
+  console.log('Develop server is running!')
+  cb()
 })
 
 gulp.task("default", gulp.series([
   'clean',
+  gulp.parallel('html', 'style', 'img', 'home')
+  ]))
+
+gulp.task("build", gulp.series([
+  'clean',
   gulp.parallel('html', 'style', 'img', 'home'),
-  'versionjson'
+  'version'
+  ]))
+
+gulp.task("develop", gulp.series([
+  'clean',
+  gulp.parallel('html', 'style', 'img', 'home'),
+  'server',
+  'watch'
   ]))

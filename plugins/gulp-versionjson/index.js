@@ -5,7 +5,7 @@ var through = require('through2')
 
 function versionjson(file) {
   if (!file) {
-    throw new Error('gulp-concat: Missing file option');
+    throw new Error('gulp-versionjson: Missing file option');
   }
   var fileName = file || 'version.json'
   var jsonMap = {}
