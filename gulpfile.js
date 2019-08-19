@@ -15,7 +15,19 @@ gulp.task('html', function () {
     .pipe(gulp.dest("dist"))
 })
 
-gulp.task('homeJs', function () {
+gulp.task('img', function () {
+  return gulp.src('src/**/img/**/*')
+    .pipe(gulp.dest('dist'))
+})
+
+gulp.task('style', function () {
+  return gulp.src('src/**/styles/**/*')
+    .pipe(sass().on('error', sass.logError))
+    .pipe(cleanCSS({compatibility: 'ie8'}))
+    .pipe(gulp.dest('dist'))
+})
+
+gulp.task('home', function () {
   return gulp.src('src/home/js/**/*')
     .pipe(sourcemaps.init())
     .pipe(babel())
@@ -23,18 +35,6 @@ gulp.task('homeJs', function () {
     .pipe(concat('home.min.js'))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('dist/home/js'))
-})
-
-gulp.task('homeImg', function () {
-  return gulp.src('src/home/img/**/*')
-    .pipe(gulp.dest('dist/home/img'))
-})
-
-gulp.task('homeStyle', function () {
-  return gulp.src('src/home/styles/**/*')
-    .pipe(sass().on('error', sass.logError))
-    .pipe(cleanCSS({compatibility: 'ie8'}))
-    .pipe(gulp.dest('dist/home/styles'))
 })
 
 gulp.task('versionjson', function () {
@@ -52,8 +52,14 @@ gulp.task('clean', function (cb) {
   return del(['dist'], cb)
 })
 
+gulp.task('watch', function () {
+  gulp.watch('src/**/*.html', gulp.series('html'))
+  gulp.watch('src/**/styles/**/*', gulp.series('style'))
+  gulp.watch('src/home/js/**/*', gulp.series('home'))
+})
+
 gulp.task("default", gulp.series([
   'clean',
-  gulp.parallel('html', 'homeImg', 'homeStyle', 'homeJs'),
+  gulp.parallel('html', 'style', 'img', 'home'),
   'versionjson'
   ]))

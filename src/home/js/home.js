@@ -1,1 +1,2 @@
-var page = 'home'
+var page = 'home';
+page += ' test11'
