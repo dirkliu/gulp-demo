@@ -15,7 +15,8 @@ module.exports = function (versionFile) {
     var versionJson = JSON.parse(fs.readFileSync(versionFile, 'utf-8').replace(/[\n\t\r]/g, ''))
     var contents = file.contents.toString()
     Object.keys(versionJson).forEach(key => {
-      contents = contents.replace(new RegExp(key, 'gm'), key + '?' + versionJson[key])
+      var staticReg = new RegExp('(?<=\\<script\\\s+[^\\\>]*src=[\\\'\\\"])' + key + '(?=[\\\'\\\"]\\\s*.*\\\>)', 'gm')
+      contents = contents.replace(staticReg, key + '?' + versionJson[key])
     })
     file.contents = Buffer.from(contents)
     this.push(file)

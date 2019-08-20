@@ -11,9 +11,7 @@ function versionjson(file) {
   var jsonMap = {}
 
   function md5(file, algorithm, encoding, fileEncoding) {
-    var hash = crypto.createHash(algorithm);
-    // grunt.log.verbose.write('Hashing ' + filepath + '...');
-    // hash.update(grunt.file.read(filepath), fileEncoding);
+    var hash = crypto.createHash(algorithm)
     hash.update(file, fileEncoding)
     return hash.digest(encoding)
   }

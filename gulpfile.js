@@ -43,10 +43,13 @@ gulp.task('version', function () {
   return gulp.src(['dist/**/*', '!dist/version.json', '!dist/*.html'])
     .pipe(versionjson('version.json'))
     .pipe(gulp.dest('dist'))
-    .pipe(gulp.src(['dist/**/*.html', 'dist/**/*.js', 'dist/**/*.css']))
+})
+
+gulp.task('staticVersion', gulp.series('version', function () {
+  return  gulp.src(['dist/**/*.html', 'dist/**/*.js', 'dist/**/*.css'])
     .pipe(staticResolve('dist/version.json'))
     .pipe(gulp.dest('dist'))
-})
+}))
 
 gulp.task('clean', function (cb) {
   return del(['dist'], cb)
@@ -76,7 +79,7 @@ gulp.task("default", gulp.series([
 gulp.task("build", gulp.series([
   'clean',
   gulp.parallel('html', 'style', 'img', 'home'),
-  'version'
+  'staticVersion'
   ]))
 
 gulp.task("develop", gulp.series([
